@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website Screenshot Tool with Previews</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            margin: 0;
+            background: #f5f5f5;
+        }
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+        }
+        .preview-section {
+            background: white;
+            margin: 30px 0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .preview-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 600px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px auto;
+            transform: scale(0.8);
+            transform-origin: center top;
+        }
+        button { 
+            background: #007cba; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 5px; 
+            margin: 10px; 
+            cursor: pointer; 
+            font-size: 16px;
+            display: block;
+            margin: 20px auto;
+        }
+        button:hover {
+            background: #005a87;
+        }
+        .instructions {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #007cba;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            margin-top: 40px;
+        }
+        .status {
+            margin: 20px 0; 
+            padding: 10px; 
+            background: #e8f5e8; 
+            border-radius: 5px; 
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Website Screenshot Generator</h1>
+        
+        <div class="instructions">
+            <h3>📸 Instructions:</h3>
+            <ol>
+                <li><strong>Preview</strong> - See how both websites will look below</li>
+                <li><strong>Generate</strong> - Click the buttons to create high-quality PNG screenshots</li>
+                <li><strong>Download</strong> - Files will automatically download as old-website.png and new-website.png</li>
+                <li><strong>Use</strong> - Move files to your website-scorecard folder and refresh the scorecard</li>
+            </ol>
+        </div>
+
+        <div class="preview-section">
+            <h2>🕰️ Old Website Preview</h2>
+            <p style="text-align: center; color: #666;">This is what the "before" screenshot will capture:</p>
+            <div class="preview-container">
+                <iframe src="old-website.html" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+            <button onclick="captureOldSite()">📸 Generate Old Website Screenshot</button>
+        </div>
+
+        <div class="preview-section">
+            <h2>✨ New Website Preview</h2>
+            <p style="text-align: center; color: #666;">This is what the "after" screenshot will capture:</p>
+            <div class="preview-container">
+                <iframe src="new-website.html" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+            <button onclick="captureNewSite()">📸 Generate New Website Screenshot</button>
+        </div>
+        
+        <div id="status" class="status"></div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <button onclick="captureOldSite(); setTimeout(captureNewSite, 1000);" style="background: #28a745; font-size: 18px; padding: 20px 40px;">
+                📸 Generate Both Screenshots
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.style.display = 'block';
+        }
+
+        function captureOldSite() {
+            showStatus('📸 Generating old website screenshot...');
+            
+            setTimeout(() => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 1200;
+                canvas.height = 800;
+                
+                // Recreate the old website with full detail
+                // Background
+                const bgGradient = ctx.createLinearGradient(0, 0, 1200, 120);
+                bgGradient.addColorStop(0, '#ff6b6b');
+                bgGradient.addColorStop(1, '#ee5a52');
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, 1200, 120);
+                
+                // Main background
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 120, 1200, 680);
+                
+                // Header content
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 28px Times, serif';
+                ctx.textAlign = 'center';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 2;
+                ctx.shadowOffsetX = 2;
+                ctx.shadowOffsetY = 2;
+                ctx.fillText('WELCOME TO OUR AMAZING WEBSITE!!!', 600, 45);
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                
+                ctx.fillStyle = 'yellow';
+                ctx.font = 'bold 16px Times, serif';
+                ctx.fillText('*** CLICK HERE FOR BEST DEALS ***', 600, 75);
+                
+                // Navigation bar
+                ctx.fillStyle = '#333';
+                ctx.fillRect(0, 120, 1200, 35);
+                ctx.fillStyle = 'yellow';
+                ctx.font = '14px Times, serif';
+                ctx.textAlign = 'left';
+                const navItems = ['Home', 'About Us', 'Products/Services', 'Contact Info', 'Links', 'Guestbook'];
+                navItems.forEach((item, index) => {
+                    ctx.fillText(item, 20 + (index * 160), 140);
+                });
+                
+                // Main content area with border
+                ctx.fillStyle = 'white';
+                ctx.fillRect(20, 170, 1160, 520);
+                ctx.strokeStyle = '#ccc';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(20, 170, 1160, 520);
+                
+                // Sidebar (yellow box)
+                ctx.fillStyle = '#ffff99';
+                ctx.fillRect(900, 190, 240, 480);
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(900, 190, 240, 480);
+                
+                // Main content text
+                ctx.fillStyle = 'red';
+                ctx.font = 'bold 24px Times, serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('About Our Business', 40, 210);
+                
+                ctx.fillStyle = 'black';
+                ctx.font = '15px Times, serif';
+                const mainText = [
+                    'We have been serving customers since 1995. Our family-owned',
+                    'business provides quality services to the local community.',
+                    'We pride ourselves on excellent customer service and',
+                    'competitive prices.',
+                    '',
+                    'Our Services Include:',
+                    '• Service #1 - We do this really well',
+                    '• Service #2 - This is also great', 
+                    '• Service #3 - You\'ll love this one',
+                    '• Service #4 - The best in the business',
+                    '',
+                    'Why Choose Us?',
+                    'There are many reasons to choose our business over the',
+                    'competition. We have years of experience and know what',
+                    'we\'re doing. Our prices are fair and our work is guaranteed.',
+                    'Call us today for a free estimate!'
+                ];
+                
+                mainText.forEach((line, index) => {
+                    if (line.startsWith('Our Services') || line.startsWith('Why Choose')) {
+                        ctx.fillStyle = 'blue';
+                        ctx.font = 'bold 16px Times, serif';
+                    } else {
+                        ctx.fillStyle = 'black';
+                        ctx.font = '15px Times, serif';
+                    }
+                    ctx.fillText(line, 40, 240 + (index * 20));
+                });
+                
+                // Special offer box
+                ctx.fillStyle = 'yellow';
+                ctx.fillRect(40, 580, 450, 30);
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(40, 580, 450, 30);
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 14px Times, serif';
+                ctx.fillText('SPECIAL OFFER: Mention this website and get 10% off your first order!', 50, 600);
+                
+                // Sidebar content
+                ctx.fillStyle = 'blue';
+                ctx.font = 'bold 16px Times, serif';
+                ctx.fillText('Latest News!', 920, 220);
+                
+                ctx.fillStyle = 'black';
+                ctx.font = '12px Times, serif';
+                const sidebarText = [
+                    'Check out our new products!',
+                    'We have the best deals in town!!!',
+                    '',
+                    'Contact Us',
+                    'Call us at 555-1234 or email',
+                    'info@business.com',
+                    '',
+                    'Visitor Counter:',
+                    'You are visitor #12,847'
+                ];
+                
+                sidebarText.forEach((line, index) => {
+                    if (line === 'Contact Us') {
+                        ctx.fillStyle = 'blue';
+                        ctx.font = 'bold 14px Times, serif';
+                    } else {
+                        ctx.fillStyle = 'black';
+                        ctx.font = '12px Times, serif';
+                    }
+                    ctx.fillText(line, 920, 245 + (index * 16));
+                });
+                
+                // Footer
+                ctx.fillStyle = '#666';
+                ctx.fillRect(0, 690, 1200, 110);
+                ctx.fillStyle = 'white';
+                ctx.font = '11px Times, serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Copyright 2023 Our Business Name | All Rights Reserved | Last Updated: March 15, 2023', 600, 750);
+                ctx.fillText('Best viewed in Internet Explorer 8 or higher | Website hits: 12,847', 600, 770);
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = 'old-website.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                showStatus('✅ Old website screenshot downloaded!');
+            }, 500);
+        }
+        
+        function captureNewSite() {
+            showStatus('📸 Generating new website screenshot...');
+            
+            setTimeout(() => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 1200;
+                canvas.height = 800;
+                
+                // New website with full detail
+                // Background gradient
+                const bgGradient = ctx.createLinearGradient(0, 0, 1200, 800);
+                bgGradient.addColorStop(0, '#f5f7fa');
+                bgGradient.addColorStop(1, '#c3cfe2');
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, 1200, 300);
+                
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 300, 1200, 500);
+                
+                // Header
+                const headerGradient = ctx.createLinearGradient(0, 0, 1200, 80);
+                headerGradient.addColorStop(0, '#667eea');
+                headerGradient.addColorStop(1, '#764ba2');
+                ctx.fillStyle = headerGradient;
+                ctx.fillRect(0, 0, 1200, 80);
+                
+                // Add subtle header shadow
+                ctx.shadowColor = 'rgba(0,0,0,0.1)';
+                ctx.shadowBlur = 10;
+                ctx.shadowOffsetY = 2;
+                ctx.fillRect(0, 0, 1200, 80);
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+                
+                // Navigation
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('Your Business', 60, 45);
+                
+                ctx.font = '16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.textAlign = 'right';
+                const newNavItems = ['Contact', 'About', 'Services', 'Home'];
+                newNavItems.forEach((item, index) => {
+                    ctx.fillText(item, 1140 - (index * 90), 45);
+                });
+                
+                // Hero section
+                ctx.fillStyle = '#333';
+                ctx.font = '300 42px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('Professional Services You Can Trust', 600, 160);
+                
+                ctx.font = '300 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.fillStyle = '#666';
+                ctx.fillText('We provide exceptional service with modern solutions tailored to your needs.', 600, 190);
+                ctx.fillText('Experience the difference quality makes.', 600, 215);
+                
+                // CTA Button with gradient and shadow
+                const buttonGradient = ctx.createLinearGradient(425, 240, 775, 290);
+                buttonGradient.addColorStop(0, '#667eea');
+                buttonGradient.addColorStop(1, '#764ba2');
+                ctx.fillStyle = buttonGradient;
+                
+                // Button shadow
+                ctx.shadowColor = 'rgba(102, 126, 234, 0.4)';
+                ctx.shadowBlur = 15;
+                ctx.shadowOffsetY = 5;
+                
+                // Rounded button
+                ctx.beginPath();
+                ctx.roundRect(425, 240, 350, 50, 25);
+                ctx.fill();
+                
+                ctx.shadowBlur = 0;
+                ctx.shadowOffsetY = 0;
+                
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.fillText('Get Started Today', 600, 270);
+                
+                // Services section title
+                ctx.fillStyle = '#333';
+                ctx.font = '300 32px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.fillText('Our Services', 600, 360);
+                
+                // Service cards with shadows
+                const services = [
+                    { title: 'Premium Service', desc: ['High-quality solutions designed to exceed', 'your expectations with attention to every detail.'] },
+                    { title: 'Expert Consultation', desc: ['Professional guidance from experienced', 'specialists who understand your industry.'] },
+                    { title: 'Ongoing Support', desc: ['Reliable support when you need it most,', 'ensuring your success every step of the way.'] }
+                ];
+                
+                services.forEach((service, index) => {
+                    const x = 75 + (index * 350);
+                    const y = 400;
+                    
+                    // Card shadow
+                    ctx.shadowColor = 'rgba(0,0,0,0.1)';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowOffsetY = 5;
+                    
+                    // Card background
+                    ctx.fillStyle = 'white';
+                    ctx.beginPath();
+                    ctx.roundRect(x, y, 300, 200, 10);
+                    ctx.fill();
+                    
+                    ctx.shadowBlur = 0;
+                    ctx.shadowOffsetY = 0;
+                    
+                    // Service icon
+                    const iconGradient = ctx.createLinearGradient(x + 20, y + 20, x + 80, y + 80);
+                    iconGradient.addColorStop(0, '#667eea');
+                    iconGradient.addColorStop(1, '#764ba2');
+                    ctx.fillStyle = iconGradient;
+                    ctx.beginPath();
+                    ctx.roundRect(x + 20, y + 20, 60, 60, 30);
+                    ctx.fill();
+                    
+                    // Service title
+                    ctx.fillStyle = '#333';
+                    ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(service.title, x + 20, y + 110);
+                    
+                    // Service description
+                    ctx.fillStyle = '#666';
+                    ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    service.desc.forEach((line, lineIndex) => {
+                        ctx.fillText(line, x + 20, y + 135 + (lineIndex * 18));
+                    });
+                });
+                
+                // Footer
+                ctx.fillStyle = '#333';
+                ctx.fillRect(0, 600, 1200, 200);
+                
+                const footerSections = [
+                    { title: 'Contact Information', items: ['Phone: (555) 123-4567', 'Email: info@yourbusiness.com', '123 Business St, City, State 12345'] },
+                    { title: 'Business Hours', items: ['Monday - Friday: 9:00 AM - 6:00 PM', 'Saturday: 10:00 AM - 4:00 PM', 'Sunday: Closed'] },
+                    { title: 'Follow Us', items: ['Facebook', 'LinkedIn', 'Twitter'] }
+                ];
+                
+                footerSections.forEach((section, index) => {
+                    const x = 100 + (index * 350);
+                    
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(section.title, x, 650);
+                    
+                    ctx.fillStyle = '#ccc';
+                    ctx.font = '14px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                    section.items.forEach((item, itemIndex) => {
+                        ctx.fillText(item, x, 675 + (itemIndex * 18));
+                    });
+                });
+                
+                // Footer bottom
+                ctx.strokeStyle = '#555';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(100, 740);
+                ctx.lineTo(1100, 740);
+                ctx.stroke();
+                
+                ctx.fillStyle = '#999';
+                ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('© 2024 Your Business Name. All rights reserved. | Privacy Policy | Terms of Service', 600, 770);
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = 'new-website.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                showStatus('✅ New website screenshot downloaded!');
+            }, 500);
+        }
+
+        // Add roundRect if not supported
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.beginPath();
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+                this.closePath();
+            };
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Capture Detailed Website Screenshots</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            margin: 0;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+        }
+        button { 
+            background: #007cba; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 5px; 
+            margin: 20px 10px; 
+            cursor: pointer; 
+            font-size: 16px;
+        }
+        button:hover {
+            background: #005a87;
+        }
+        .preview {
+            border: 2px solid #ddd;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .instructions {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .hidden-frames {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Capture Detailed Website Screenshots</h1>
+        <p>This tool will create high-quality screenshots of the detailed websites for your scorecard.</p>
+        
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Click "Generate Old Website Screenshot" to create old-website.png</li>
+                <li>Click "Generate New Website Screenshot" to create new-website.png</li>
+                <li>Both files will be automatically downloaded</li>
+                <li>Move the files to your website-scorecard folder if needed</li>
+                <li>Refresh the scorecard to see the results</li>
+            </ol>
+        </div>
+
+        <div style="text-align: center;">
+            <button onclick="captureOldSite()">Generate Old Website Screenshot</button>
+            <button onclick="captureNewSite()">Generate New Website Screenshot</button>
+        </div>
+        
+        <div id="status" style="margin: 20px 0; padding: 10px; background: #f0f0f0; border-radius: 5px; display: none;"></div>
+    </div>
+
+    <!-- Hidden iframes for rendering -->
+    <div class="hidden-frames">
+        <iframe id="oldFrame" width="1200" height="800" src="old-website.html"></iframe>
+        <iframe id="newFrame" width="1200" height="800" src="new-website.html"></iframe>
+    </div>
+
+    <script>
+        function showStatus(message) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.style.display = 'block';
+            status.style.background = '#e8f5e8';
+        }
+
+        function captureOldSite() {
+            showStatus('Generating old website screenshot...');
+            
+            setTimeout(() => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 1200;
+                canvas.height = 800;
+                
+                // Old website recreation with full detail
+                // Background
+                const bgGradient = ctx.createLinearGradient(0, 0, 1200, 400);
+                bgGradient.addColorStop(0, '#ff6b6b');
+                bgGradient.addColorStop(1, '#ee5a52');
+                ctx.fillStyle = bgGradient;
+                ctx.fillRect(0, 0, 1200, 120);
+                
+                // Main background
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 120, 1200, 680);
+                
+                // Header content
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 32px Times';
+                ctx.textAlign = 'center';
+                ctx.fillText('WELCOME TO OUR AMAZING WEBSITE!!!', 600, 50);
+                
+                ctx.fillStyle = 'yellow';
+                ctx.font = 'bold 18px Times';
+                ctx.fillText('*** CLICK HERE FOR BEST DEALS ***', 600, 85);
+                
+                // Navigation bar
+                ctx.fillStyle = '#333';
+                ctx.fillRect(0, 120, 1200, 40);
+                ctx.fillStyle = 'yellow';
+                ctx.font = '14px Times';
+                ctx.textAlign = 'left';
+                const navItems = ['Home', 'About Us', 'Products/Services', 'Contact Info', 'Links', 'Guestbook'];
+                navItems.forEach((item, index) => {
+                    ctx.fillText(item, 20 + (index * 150), 142);
+                });
+                
+                // Main content area
+                ctx.fillStyle = 'white';
+                ctx.fillRect(20, 180, 1160, 560);
+                ctx.strokeStyle = '#ccc';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(20, 180, 1160, 560);
+                
+                // Sidebar
+                ctx.fillStyle = '#ffff99';
+                ctx.fillRect(900, 200, 260, 520);
+                ctx.strokeStyle = 'black';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(900, 200, 260, 520);
+                
+                // Main content
+                ctx.fillStyle = 'red';
+                ctx.font = 'bold 28px Times';
+                ctx.textAlign = 'left';
+                ctx.fillText('About Our Business', 40, 230);
+                
+                ctx.fillStyle = 'black';
+                ctx.font = '16px Times';
+                const mainText = [
+                    'We have been serving customers since 1995. Our family-owned',
+                    'business provides quality services to the local community.',
+                    'We pride ourselves on excellent customer service and',
+                    'competitive prices.',
+                    '',
+                    'Our Services Include:',
+                    '• Service #1 - We do this really well',
+                    '• Service #2 - This is also great', 
+                    '• Service #3 - You\'ll love this one',
+                    '• Service #4 - The best in the business',
+                    '',
+                    'Why Choose Us?',
+                    'There are many reasons to choose our business over the',
+                    'competition. We have years of experience and know what',
+                    'we\'re doing. Our prices are fair and our work is guaranteed.',
+                    'Call us today for a free estimate!'
+                ];
+                
+                mainText.forEach((line, index) => {
+                    if (line.startsWith('Our Services') || line.startsWith('Why Choose')) {
+                        ctx.fillStyle = 'blue';
+                        ctx.font = 'bold 18px Times';
+                    } else {
+                        ctx.fillStyle = 'black';
+                        ctx.font = '16px Times';
+                    }
+                    ctx.fillText(line, 40, 260 + (index * 22));
+                });
+                
+                // Special offer box
+                ctx.fillStyle = 'yellow';
+                ctx.fillRect(40, 600, 400, 30);
+                ctx.strokeStyle = 'red';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(40, 600, 400, 30);
+                ctx.fillStyle = 'black';
+                ctx.font = 'bold 16px Times';
+                ctx.fillText('SPECIAL OFFER: Mention this website and get 10% off!', 50, 620);
+                
+                // Sidebar content
+                ctx.fillStyle = 'blue';
+                ctx.font = 'bold 16px Times';
+                ctx.fillText('Latest News!', 920, 230);
+                
+                ctx.fillStyle = 'black';
+                ctx.font = '12px Times';
+                const sidebarText = [
+                    'Check out our new products!',
+                    'We have the best deals in town!!!',
+                    '',
+                    'Contact Us',
+                    'Call us at 555-1234 or email',
+                    'info@business.com',
+                    '',
+                    'Visitor Counter:',
+                    'You are visitor #12,847'
+                ];
+                
+                sidebarText.forEach((line, index) => {
+                    if (line === 'Contact Us') {
+                        ctx.fillStyle = 'blue';
+                        ctx.font = 'bold 14px Times';
+                    } else {
+                        ctx.fillStyle = 'black';
+                        ctx.font = '12px Times';
+                    }
+                    ctx.fillText(line, 920, 250 + (index * 18));
+                });
+                
+                // Footer
+                ctx.fillStyle = '#666';
+                ctx.fillRect(0, 740, 1200, 60);
+                ctx.fillStyle = 'white';
+                ctx.font = '12px Times';
+                ctx.textAlign = 'center';
+                ctx.fillText('Copyright 2023 Our Business Name | All Rights Reserved | Last Updated: March 15, 2023', 600, 760);
+                ctx.fillText('Best viewed in Internet Explorer 8 or higher | Website hits: 12,847', 600, 780);
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = 'old-website.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                showStatus('Old website screenshot generated and downloaded!');
+            }, 500);
+        }
+        
+        function captureNewSite() {
+            showStatus('Generating new website screenshot...');
+            
+            setTimeout(() => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.width = 1200;
+                canvas.height = 800;
+                
+                // New website recreation with full detail
+                // Background
+                ctx.fillStyle = '#f5f7fa';
+                ctx.fillRect(0, 0, 1200, 800);
+                
+                // Header
+                const headerGradient = ctx.createLinearGradient(0, 0, 1200, 80);
+                headerGradient.addColorStop(0, '#667eea');
+                headerGradient.addColorStop(1, '#764ba2');
+                ctx.fillStyle = headerGradient;
+                ctx.fillRect(0, 0, 1200, 80);
+                
+                // Navigation
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 24px system-ui';
+                ctx.textAlign = 'left';
+                ctx.fillText('Your Business', 60, 45);
+                
+                ctx.font = '16px system-ui';
+                ctx.textAlign = 'right';
+                const newNavItems = ['Home', 'Services', 'About', 'Contact'];
+                newNavItems.forEach((item, index) => {
+                    ctx.fillText(item, 1140 - (index * 80), 45);
+                });
+                
+                // Hero section
+                const heroGradient = ctx.createLinearGradient(0, 80, 1200, 350);
+                heroGradient.addColorStop(0, '#f5f7fa');
+                heroGradient.addColorStop(1, '#c3cfe2');
+                ctx.fillStyle = heroGradient;
+                ctx.fillRect(0, 80, 1200, 270);
+                
+                ctx.fillStyle = '#333';
+                ctx.font = '300 48px system-ui';
+                ctx.textAlign = 'center';
+                ctx.fillText('Professional Services You Can Trust', 600, 200);
+                
+                ctx.font = '300 20px system-ui';
+                ctx.fillStyle = '#666';
+                ctx.fillText('We provide exceptional service with modern solutions tailored to your needs.', 600, 240);
+                ctx.fillText('Experience the difference quality makes.', 600, 270);
+                
+                // CTA Button
+                const buttonGradient = ctx.createLinearGradient(450, 290, 750, 330);
+                buttonGradient.addColorStop(0, '#667eea');
+                buttonGradient.addColorStop(1, '#764ba2');
+                ctx.fillStyle = buttonGradient;
+                ctx.fillRect(450, 290, 300, 50);
+                ctx.fillStyle = 'white';
+                ctx.font = 'bold 18px system-ui';
+                ctx.fillText('Get Started Today', 600, 320);
+                
+                // Services section
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 350, 1200, 350);
+                
+                ctx.fillStyle = '#333';
+                ctx.font = '300 36px system-ui';
+                ctx.fillText('Our Services', 600, 400);
+                
+                // Service cards
+                const services = [
+                    { title: 'Premium Service', desc: 'High-quality solutions designed to exceed\nyour expectations with attention to every detail.' },
+                    { title: 'Expert Consultation', desc: 'Professional guidance from experienced\nspecialists who understand your industry.' },
+                    { title: 'Ongoing Support', desc: 'Reliable support when you need it most,\nensuring your success every step of the way.' }
+                ];
+                
+                services.forEach((service, index) => {
+                    const x = 100 + (index * 350);
+                    const y = 450;
+                    
+                    // Card background
+                    ctx.fillStyle = 'white';
+                    ctx.fillRect(x, y, 300, 200);
+                    ctx.shadowColor = 'rgba(0,0,0,0.1)';
+                    ctx.shadowBlur = 15;
+                    ctx.shadowOffsetY = 5;
+                    ctx.fillRect(x, y, 300, 200);
+                    ctx.shadowBlur = 0;
+                    ctx.shadowOffsetY = 0;
+                    
+                    // Service icon
+                    const iconGradient = ctx.createLinearGradient(x + 20, y + 20, x + 80, y + 80);
+                    iconGradient.addColorStop(0, '#667eea');
+                    iconGradient.addColorStop(1, '#764ba2');
+                    ctx.fillStyle = iconGradient;
+                    ctx.fillRect(x + 20, y + 20, 60, 60);
+                    
+                    // Service title
+                    ctx.fillStyle = '#333';
+                    ctx.font = 'bold 18px system-ui';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(service.title, x + 20, y + 110);
+                    
+                    // Service description
+                    ctx.fillStyle = '#666';
+                    ctx.font = '14px system-ui';
+                    const lines = service.desc.split('\n');
+                    lines.forEach((line, lineIndex) => {
+                        ctx.fillText(line, x + 20, y + 135 + (lineIndex * 18));
+                    });
+                });
+                
+                // Footer
+                ctx.fillStyle = '#333';
+                ctx.fillRect(0, 700, 1200, 100);
+                
+                const footerSections = [
+                    { title: 'Contact Information', items: ['Phone: (555) 123-4567', 'Email: info@yourbusiness.com', 'Address: 123 Business St, City, State'] },
+                    { title: 'Business Hours', items: ['Monday - Friday: 9:00 AM - 6:00 PM', 'Saturday: 10:00 AM - 4:00 PM', 'Sunday: Closed'] },
+                    { title: 'Follow Us', items: ['Facebook', 'LinkedIn', 'Twitter'] }
+                ];
+                
+                footerSections.forEach((section, index) => {
+                    const x = 100 + (index * 350);
+                    
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 16px system-ui';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(section.title, x, 730);
+                    
+                    ctx.fillStyle = '#ccc';
+                    ctx.font = '14px system-ui';
+                    section.items.forEach((item, itemIndex) => {
+                        ctx.fillText(item, x, 750 + (itemIndex * 16));
+                    });
+                });
+                
+                // Footer bottom
+                ctx.fillStyle = '#999';
+                ctx.font = '12px system-ui';
+                ctx.textAlign = 'center';
+                ctx.fillText('© 2024 Your Business Name. All rights reserved. | Privacy Policy | Terms of Service', 600, 790);
+                
+                // Download
+                const link = document.createElement('a');
+                link.download = 'new-website.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+                
+                showStatus('New website screenshot generated and downloaded!');
+            }, 500);
+        }
+    </script>
+</body>
+</html>

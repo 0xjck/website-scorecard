@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Mockup Images</title>
+    <style>
+        .mockup {
+            width: 1200px;
+            height: 800px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+        }
+        
+        .old-mockup {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: Times, serif;
+            position: relative;
+        }
+        
+        .old-mockup::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="12" fill="yellow">★ UNDER CONSTRUCTION ★</text></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .old-content {
+            z-index: 1;
+            text-align: center;
+            background: rgba(0,0,0,0.7);
+            padding: 40px;
+            border-radius: 10px;
+        }
+        
+        .new-mockup {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
+        .new-content {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .blink {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        button {
+            background: #007cba;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            margin: 20px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div style="padding: 20px; max-width: 1240px; margin: 0 auto;">
+        <h1>Create Mockup Images</h1>
+        <p>Right-click each mockup and "Save image as..." to create the PNG files.</p>
+        
+        <h2>Old Website Mockup (Save as: old-website.png)</h2>
+        <div class="mockup old-mockup" id="oldMockup">
+            <div class="old-content">
+                <h1 style="font-size: 48px; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">WELCOME TO OUR SITE!</h1>
+                <p class="blink" style="font-size: 24px; color: yellow; margin: 20px 0;">★ BEST DEALS IN TOWN ★</p>
+                <p style="font-size: 18px; margin: 20px 0;">Established 1995 | Family Owned Business</p>
+                <div style="background: yellow; color: black; padding: 10px; margin: 20px; border: 2px solid red;">
+                    <strong>SPECIAL OFFER: 10% OFF!</strong>
+                </div>
+                <p style="font-size: 14px; opacity: 0.8;">Best viewed in Internet Explorer | Visitor #12,847</p>
+            </div>
+        </div>
+        
+        <button onclick="downloadOldMockup()">Download Old Website Image</button>
+        
+        <h2>New Website Mockup (Save as: new-website.png)</h2>
+        <div class="mockup new-mockup" id="newMockup">
+            <div class="new-content">
+                <h1 style="font-size: 56px; margin: 0; font-weight: 300; letter-spacing: -1px;">Professional Services</h1>
+                <p style="font-size: 24px; margin: 30px 0; opacity: 0.9; font-weight: 300;">Quality solutions tailored to your needs</p>
+                <div style="background: rgba(255,255,255,0.2); padding: 15px 30px; border-radius: 50px; display: inline-block; margin: 20px;">
+                    <strong>Get Started Today</strong>
+                </div>
+                <p style="font-size: 16px; margin-top: 30px; opacity: 0.8;">Modern • Secure • Fast</p>
+            </div>
+        </div>
+        
+        <button onclick="downloadNewMockup()">Download New Website Image</button>
+        
+        <div style="background: #f0f0f0; padding: 20px; margin: 40px 0; border-radius: 5px;">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Click "Download Old Website Image" and save as <code>old-website.png</code></li>
+                <li>Click "Download New Website Image" and save as <code>new-website.png</code></li>
+                <li>Move both files to the website-scorecard folder</li>
+                <li>Refresh the scorecard to see the images</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function downloadOldMockup() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1200;
+            canvas.height = 800;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 800);
+            gradient.addColorStop(0, '#ff6b6b');
+            gradient.addColorStop(1, '#ee5a52');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 800);
+            
+            // Content box
+            ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            ctx.fillRect(300, 200, 600, 400);
+            
+            // Text
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 48px Times';
+            ctx.textAlign = 'center';
+            ctx.fillText('WELCOME TO OUR SITE!', 600, 300);
+            
+            ctx.fillStyle = 'yellow';
+            ctx.font = 'bold 24px Times';
+            ctx.fillText('★ BEST DEALS IN TOWN ★', 600, 350);
+            
+            ctx.fillStyle = 'white';
+            ctx.font = '18px Times';
+            ctx.fillText('Established 1995 | Family Owned Business', 600, 400);
+            
+            // Special offer box
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(400, 420, 400, 50);
+            ctx.fillStyle = 'black';
+            ctx.font = 'bold 16px Times';
+            ctx.fillText('SPECIAL OFFER: 10% OFF!', 600, 450);
+            
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.font = '14px Times';
+            ctx.fillText('Best viewed in Internet Explorer | Visitor #12,847', 600, 520);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = 'old-website.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadNewMockup() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1200;
+            canvas.height = 800;
+            
+            // Background gradient
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 800);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 800);
+            
+            // Content box
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            ctx.fillRect(200, 150, 800, 500);
+            
+            // Text
+            ctx.fillStyle = 'white';
+            ctx.font = '300 56px system-ui';
+            ctx.textAlign = 'center';
+            ctx.fillText('Professional Services', 600, 300);
+            
+            ctx.font = '300 24px system-ui';
+            ctx.fillText('Quality solutions tailored to your needs', 600, 350);
+            
+            // CTA button
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.fillRect(450, 380, 300, 60);
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 18px system-ui';
+            ctx.fillText('Get Started Today', 600, 415);
+            
+            ctx.font = '16px system-ui';
+            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.fillText('Modern • Secure • Fast', 600, 500);
+            
+            // Download
+            const link = document.createElement('a');
+            link.download = 'new-website.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>

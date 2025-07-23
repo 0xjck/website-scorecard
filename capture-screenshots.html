@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Screenshot Capture Tool</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .preview { border: 1px solid #ccc; margin: 20px 0; }
+        button { background: #007cba; color: white; padding: 10px 20px; border: none; border-radius: 5px; margin: 10px; cursor: pointer; }
+        .iframe-container { width: 1200px; height: 800px; transform: scale(0.67); transform-origin: 0 0; margin-bottom: 20px; }
+        iframe { width: 100%; height: 100%; border: 1px solid #ccc; }
+        .screenshot-result { margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Website Screenshot Tool</h1>
+        <p>This tool will help you capture screenshots of both websites for the slider.</p>
+        
+        <h2>Old Website Preview</h2>
+        <div class="iframe-container">
+            <iframe id="oldSite" src="old-website.html"></iframe>
+        </div>
+        <button onclick="captureOldSite()">Capture Old Website Screenshot</button>
+        <div id="oldScreenshot" class="screenshot-result"></div>
+        
+        <h2>New Website Preview</h2>
+        <div class="iframe-container">
+            <iframe id="newSite" src="new-website.html"></iframe>
+        </div>
+        <button onclick="captureNewSite()">Capture New Website Screenshot</button>
+        <div id="newScreenshot" class="screenshot-result"></div>
+        
+        <div id="instructions" style="background: #f0f0f0; padding: 20px; margin: 20px 0; border-radius: 5px;">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Click "Capture Old Website Screenshot" to create old-site.png</li>
+                <li>Right-click the generated image and "Save As" → old-site.png</li>
+                <li>Click "Capture New Website Screenshot" to create new-site.png</li>
+                <li>Right-click and save as new-site.png</li>
+                <li>Place both images in the website-scorecard folder</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function captureOldSite() {
+            const iframe = document.getElementById('oldSite');
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            
+            html2canvas(iframeDoc.body, {
+                width: 1200,
+                height: 800,
+                scale: 1,
+                useCORS: true
+            }).then(canvas => {
+                const img = document.createElement('img');
+                img.src = canvas.toDataURL('image/png');
+                img.style.maxWidth = '100%';
+                img.alt = 'Old Website Screenshot';
+                
+                const result = document.getElementById('oldScreenshot');
+                result.innerHTML = '<h3>Old Website Screenshot (Right-click to save as old-site.png):</h3>';
+                result.appendChild(img);
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'old-site.png';
+                link.href = canvas.toDataURL('image/png');
+                link.textContent = 'Download old-site.png';
+                link.style.display = 'block';
+                link.style.margin = '10px 0';
+                result.appendChild(link);
+            }).catch(err => {
+                console.error('Error capturing old site:', err);
+                document.getElementById('oldScreenshot').innerHTML = '<p style="color: red;">Error capturing screenshot. Try the manual method below.</p>';
+            });
+        }
+        
+        function captureNewSite() {
+            const iframe = document.getElementById('newSite');
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            
+            html2canvas(iframeDoc.body, {
+                width: 1200,
+                height: 800,
+                scale: 1,
+                useCORS: true
+            }).then(canvas => {
+                const img = document.createElement('img');
+                img.src = canvas.toDataURL('image/png');
+                img.style.maxWidth = '100%';
+                img.alt = 'New Website Screenshot';
+                
+                const result = document.getElementById('newScreenshot');
+                result.innerHTML = '<h3>New Website Screenshot (Right-click to save as new-site.png):</h3>';
+                result.appendChild(img);
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'new-site.png';
+                link.href = canvas.toDataURL('image/png');
+                link.textContent = 'Download new-site.png';
+                link.style.display = 'block';
+                link.style.margin = '10px 0';
+                result.appendChild(link);
+            }).catch(err => {
+                console.error('Error capturing new site:', err);
+                document.getElementById('newScreenshot').innerHTML = '<p style="color: red;">Error capturing screenshot. Try the manual method below.</p>';
+            });
+        }
+        
+        // Wait for iframes to load
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                document.getElementById('instructions').innerHTML += `
+                    <p><strong>Alternative Manual Method:</strong></p>
+                    <ol>
+                        <li>Open old-website.html in a new tab</li>
+                        <li>Take screenshot (Cmd+Shift+4 on Mac)</li>
+                        <li>Save as old-site.png in the website-scorecard folder</li>
+                        <li>Repeat for new-website.html → new-site.png</li>
+                    </ol>
+                `;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

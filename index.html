@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Scorecard - ShiteSites</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .image-reveal {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .slider {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transition: left 0.5s ease;
+        }
+        .grade-circle {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .expandable-row {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Password Protection Modal -->
+    <div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
+            <h2 class="text-2xl font-bold mb-4">Access Website Scorecard</h2>
+            <p class="text-gray-600 mb-6">Please enter your password to view the scorecard.</p>
+            <input type="password" id="passwordInput" class="w-full p-3 border rounded-lg mb-4" placeholder="Enter password">
+            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">Access Scorecard</button>
+            <p id="errorMessage" class="text-red-500 mt-4 hidden">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Main Content (Hidden Initially) -->
+    <div id="mainContent" class="hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900">Website Scorecard</h1>
+                        <p class="text-gray-600 mt-1">See how your new website compares to the old one</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">Prepared for</p>
+                        <p class="text-lg font-semibold">Sample Business Ltd</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Image Reveal Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">Your Website Transformation</h2>
+                
+                <!-- Reveal Button -->
+                <div class="text-center mb-6">
+                    <button id="revealButton" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-3 mx-auto">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                        Reveal Transformation
+                    </button>
+                </div>
+
+                <div class="relative max-w-3xl mx-auto mb-8">
+                    <div class="image-reveal bg-gray-200 rounded-lg overflow-hidden relative" id="imageContainer">
+                        <!-- New Site Image (Background - Always visible) -->
+                        <img src="new-website.png" alt="New Website" class="w-full h-full object-contain absolute top-0 left-0" id="newSiteImage">
+                        
+                        <!-- Old Site Image (Foreground - Gets clipped by slider) -->
+                        <div class="old-site-overlay absolute top-0 left-0 w-full h-full overflow-hidden" id="oldSiteOverlay">
+                            <img src="old-website.png" alt="Old Website" class="w-full h-full object-contain" id="oldSiteImage">
+                        </div>
+                        
+                        <!-- Slider Handle -->
+                        <div class="absolute top-0 w-1 h-full bg-white shadow-lg cursor-ew-resize z-10 opacity-0 transition-opacity duration-300" id="sliderHandle" style="left: 100%;">
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg">
+                                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Progress Indicator (shown during auto-reveal) -->
+                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300" id="progressIndicator">
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
+                                <span class="text-sm font-medium text-gray-700">Revealing transformation...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center gap-8">
+                    <a href="old-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        View Old Website
+                    </a>
+                    <a href="new-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                        View New Website
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overall Score Section -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-8 text-center">Overall Website Score</h2>
+                
+                <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+                    <!-- Old Site Score -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-600">Old Website</h3>
+                        <div class="grade-circle inline-flex items-center justify-center w-32 h-32 rounded-full bg-red-100 text-red-600 mb-4">
+                            <span class="text-5xl font-bold">D</span>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-800">48/100</p>
+                        <p class="text-gray-600 mt-2">Poor Performance</p>
+                    </div>
+                    
+                    <!-- New Site Score -->
+                    <div class="text-center">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-600">New Website</h3>
+                        <div class="grade-circle inline-flex items-center justify-center w-32 h-32 rounded-full bg-green-100 text-green-600 mb-4">
+                            <span class="text-5xl font-bold">A</span>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-800">93/100</p>
+                        <p class="text-gray-600 mt-2">Excellent Performance</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Comparison Table -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-2xl font-bold mb-8">Detailed Comparison</h2>
+                
+                <div class="space-y-4" id="comparisonTable">
+                    <!-- SEO Score -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('seo')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold">🔍 SEO Score</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How well search engines can find and understand your site</p>
+                                </div>
+                                <div class="flex items-center gap-8">
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">Old</p>
+                                        <p class="text-2xl font-bold text-red-600">42</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">New</p>
+                                        <p class="text-2xl font-bold text-green-600">88</p>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="seo-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="seo-details" class="hidden border-t px-6 py-4 bg-gray-50">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold mb-3">Key Improvements:</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Added proper page titles and descriptions</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Implemented structured data for better search results</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Optimized images with descriptive alt text</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600">With better SEO, more potential customers will find your website when searching for your services. This typically leads to 30-50% more organic traffic within 3-6 months.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Score -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('performance')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold">⚡ Speed & Performance</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How fast your website loads for visitors</p>
+                                </div>
+                                <div class="flex items-center gap-8">
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">Old</p>
+                                        <p class="text-2xl font-bold text-red-600">38</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">New</p>
+                                        <p class="text-2xl font-bold text-green-600">92</p>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="performance-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="performance-details" class="hidden border-t px-6 py-4 bg-gray-50">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold mb-3">Loading Time Improvement:</h4>
+                                    <div class="space-y-3">
+                                        <div>
+                                            <p class="text-sm text-gray-600">First Paint</p>
+                                            <div class="flex items-center gap-4">
+                                                <span class="text-red-600 font-mono">4.2s</span>
+                                                <span>→</span>
+                                                <span class="text-green-600 font-mono">1.2s</span>
+                                                <span class="text-sm text-green-600">(71% faster)</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Interactive Time</p>
+                                            <div class="flex items-center gap-4">
+                                                <span class="text-red-600 font-mono">6.3s</span>
+                                                <span>→</span>
+                                                <span class="text-green-600 font-mono">1.8s</span>
+                                                <span class="text-sm text-green-600">(71% faster)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600">Faster websites keep visitors engaged. Studies show that a 1-second delay can result in 7% fewer conversions. Your new site loads 3 seconds faster, potentially increasing conversions by 20%+.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accessibility Score -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('accessibility')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold">♿ Accessibility</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How usable your site is for all visitors, including those with disabilities</p>
+                                </div>
+                                <div class="flex items-center gap-8">
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">Old</p>
+                                        <p class="text-2xl font-bold text-red-600">51</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">New</p>
+                                        <p class="text-2xl font-bold text-green-600">95</p>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="accessibility-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="accessibility-details" class="hidden border-t px-6 py-4 bg-gray-50">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold mb-3">Improvements Made:</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Fixed 12 color contrast issues for better readability</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Added keyboard navigation for all interactive elements</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Implemented screen reader support</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600">An accessible website reaches 15% more potential customers and reduces legal risk. It also improves the experience for all users, especially on mobile devices.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Design Quality -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('design')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold">🎨 Design & User Experience</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How professional and easy to use your website is</p>
+                                </div>
+                                <div class="flex items-center gap-8">
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">Old</p>
+                                        <p class="text-2xl font-bold text-red-600">3/10</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">New</p>
+                                        <p class="text-2xl font-bold text-green-600">9/10</p>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="design-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="design-details" class="hidden border-t px-6 py-4 bg-gray-50">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold mb-3">Visual Improvements:</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Modern, professional design that builds trust</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Clear navigation that helps visitors find information</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Fully responsive design that works on all devices</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600">First impressions matter. A professional design increases trust by 75% and makes visitors 3x more likely to contact you or make a purchase.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Technical Health -->
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('technical')">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <h3 class="text-lg font-semibold">🔧 Technical Health</h3>
+                                    <p class="text-gray-600 text-sm mt-1">Security and modern web standards compliance</p>
+                                </div>
+                                <div class="flex items-center gap-8">
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">Old</p>
+                                        <p class="text-xl font-bold text-red-600">❌</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm text-gray-500">New</p>
+                                        <p class="text-xl font-bold text-green-600">✓</p>
+                                    </div>
+                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="technical-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="technical-details" class="hidden border-t px-6 py-4 bg-gray-50">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-semibold mb-3">Technical Upgrades:</h4>
+                                    <ul class="space-y-2 text-sm">
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Secure HTTPS connection protects visitor data</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Modern framework ensures future compatibility</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="text-green-500">✓</span>
+                                            <span>Clean code with no errors or warnings</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600">A secure, well-built website protects your business and customers. Google also favors secure sites, giving you an edge over competitors.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-8 text-white text-center">
+                <h2 class="text-3xl font-bold mb-4">Ready to Launch Your New Website?</h2>
+                <p class="text-xl mb-8 text-blue-100">Your improved website is ready to help grow your business.</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+                        Schedule a Call
+                    </button>
+                    <button class="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition">
+                        View Full Demo
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Password protection
+        const CORRECT_PASSWORD = 'demo123'; // In production, this would be dynamic
+        
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            if (password === CORRECT_PASSWORD) {
+                document.getElementById('passwordModal').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+                initializeSlider();
+            } else {
+                document.getElementById('errorMessage').classList.remove('hidden');
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        // Image slider functionality - wipe away effect with responsive sizing
+        function initializeSlider() {
+            const imageContainer = document.getElementById('imageContainer');
+            const oldSiteOverlay = document.getElementById('oldSiteOverlay');
+            const handle = document.getElementById('sliderHandle');
+            const revealButton = document.getElementById('revealButton');
+            const progressIndicator = document.getElementById('progressIndicator');
+            const newSiteImage = document.getElementById('newSiteImage');
+            
+            let isSliding = false;
+            let isAutoAnimating = false;
+            let animationId = null;
+
+            // Set responsive container height based on image aspect ratio
+            function setResponsiveHeight() {
+                const img = new Image();
+                img.onload = function() {
+                    const aspectRatio = this.height / this.width;
+                    const containerWidth = imageContainer.offsetWidth;
+                    const containerHeight = containerWidth * aspectRatio;
+                    imageContainer.style.height = containerHeight + 'px';
+                };
+                img.src = 'new-website.png';
+            }
+
+            // Call on load and resize
+            setResponsiveHeight();
+            window.addEventListener('resize', setResponsiveHeight);
+
+            // Reveal button functionality
+            revealButton.addEventListener('click', startAutoReveal);
+
+            function startAutoReveal() {
+                if (isAutoAnimating) return;
+                
+                isAutoAnimating = true;
+                revealButton.disabled = true;
+                revealButton.textContent = 'Revealing...';
+                progressIndicator.style.opacity = '1';
+                handle.style.opacity = '0.3';
+                
+                // Smooth 3-second animation
+                const startTime = Date.now();
+                const duration = 3000; // 3 seconds
+                const startPosition = 100; // Start with old site fully visible
+                const endPosition = 0; // End with new site fully visible
+                
+                function animate() {
+                    const elapsed = Date.now() - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Easing function for smooth animation
+                    const easeInOut = progress < 0.5 
+                        ? 2 * progress * progress 
+                        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                    
+                    const currentPosition = startPosition - (easeInOut * (startPosition - endPosition));
+                    const percentage = 100 - currentPosition;
+                    
+                    // Update clip path and handle position
+                    oldSiteOverlay.style.clipPath = `inset(0 ${currentPosition}% 0 0)`;
+                    handle.style.left = percentage + '%';
+                    
+                    if (progress < 1) {
+                        animationId = requestAnimationFrame(animate);
+                    } else {
+                        // Animation complete
+                        finishAutoReveal();
+                    }
+                }
+                
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function finishAutoReveal() {
+                isAutoAnimating = false;
+                progressIndicator.style.opacity = '0';
+                handle.style.opacity = '1';
+                revealButton.disabled = false;
+                revealButton.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                    Replay Transformation
+                `;
+            }
+
+            // Manual slider control
+            handle.addEventListener('mousedown', startSliding);
+            document.addEventListener('mousemove', slide);
+            document.addEventListener('mouseup', stopSliding);
+            
+            // Touch support for mobile
+            handle.addEventListener('touchstart', startSliding);
+            document.addEventListener('touchmove', handleTouchMove);
+            document.addEventListener('touchend', stopSliding);
+
+            function startSliding(e) {
+                // Stop any auto animation
+                if (isAutoAnimating) {
+                    cancelAnimationFrame(animationId);
+                    finishAutoReveal();
+                }
+                
+                isSliding = true;
+                handle.style.opacity = '1';
+                e.preventDefault();
+            }
+
+            function slide(e) {
+                if (!isSliding) return;
+                
+                const rect = oldSiteOverlay.parentElement.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                x = Math.max(0, Math.min(x, rect.width));
+                
+                updateSliderPosition(x, rect.width);
+            }
+
+            function handleTouchMove(e) {
+                if (!isSliding) return;
+                
+                const rect = oldSiteOverlay.parentElement.getBoundingClientRect();
+                let x = e.touches[0].clientX - rect.left;
+                x = Math.max(0, Math.min(x, rect.width));
+                
+                updateSliderPosition(x, rect.width);
+                e.preventDefault();
+            }
+
+            function updateSliderPosition(x, containerWidth) {
+                const percentage = (x / containerWidth) * 100;
+                
+                // Clip the old site image from the right side
+                // 0% = old site fully visible, 100% = new site fully visible
+                const rightClip = 100 - percentage;
+                oldSiteOverlay.style.clipPath = `inset(0 ${rightClip}% 0 0)`;
+                handle.style.left = percentage + '%';
+            }
+
+            function stopSliding() {
+                isSliding = false;
+            }
+
+            // Initialize with old site fully visible
+            oldSiteOverlay.style.clipPath = 'inset(0 0% 0 0)';
+            handle.style.left = '100%';
+        }
+
+        // Expandable rows
+        function toggleRow(category) {
+            const details = document.getElementById(category + '-details');
+            const arrow = document.getElementById(category + '-arrow');
+            
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                arrow.style.transform = 'rotate(180deg)';
+            } else {
+                details.classList.add('hidden');
+                arrow.style.transform = 'rotate(0deg)';
+            }
+        }
+    </script>
+</body>
+</html>
