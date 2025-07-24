@@ -682,8 +682,8 @@
                 // Smooth 5-second animation
                 const startTime = Date.now();
                 const duration = 5000; // 5 seconds for smoother reveal
-                const startPosition = 100; // Start with old site fully visible
-                const endPosition = 0; // End with new site fully visible
+                const startPosition = 0; // Start with handle at left (old site visible)
+                const endPosition = 100; // End with handle at right (new site revealed)
                 
                 function animate() {
                     const elapsed = Date.now() - startTime;
@@ -694,12 +694,12 @@
                         ? 4 * progress * progress * progress
                         : 1 - Math.pow(-2 * progress + 2, 3) / 2;
                     
-                    const currentPosition = startPosition - (easeInOut * (startPosition - endPosition));
-                    const percentage = 100 - currentPosition;
+                    const currentPosition = startPosition + (easeInOut * (endPosition - startPosition));
                     
                     // Update clip path and handle position
-                    oldSiteOverlay.style.clipPath = `inset(0 ${currentPosition}% 0 0)`;
-                    handle.style.left = percentage + '%';
+                    // Clip from left side as slider moves right
+                    oldSiteOverlay.style.clipPath = `inset(0 0 0 ${currentPosition}%)`;
+                    handle.style.left = currentPosition + '%';
                     
                     if (progress < 1) {
                         animationId = requestAnimationFrame(animate);
@@ -771,10 +771,9 @@
             function updateSliderPosition(x, containerWidth) {
                 const percentage = (x / containerWidth) * 100;
                 
-                // Clip the old site image from the right side
+                // Clip the old site image from the left side
                 // 0% = old site fully visible, 100% = new site fully visible
-                const rightClip = 100 - percentage;
-                oldSiteOverlay.style.clipPath = `inset(0 ${rightClip}% 0 0)`;
+                oldSiteOverlay.style.clipPath = `inset(0 0 0 ${percentage}%)`;
                 handle.style.left = percentage + '%';
             }
 
@@ -782,9 +781,9 @@
                 isSliding = false;
             }
 
-            // Initialize with old site fully visible
-            oldSiteOverlay.style.clipPath = 'inset(0 0% 0 0)';
-            handle.style.left = '100%';
+            // Initialize with old site fully visible, handle at left
+            oldSiteOverlay.style.clipPath = 'inset(0 0 0 0%)';
+            handle.style.left = '0%';
         }
 
         // Expandable rows
