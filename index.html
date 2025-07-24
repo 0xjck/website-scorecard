@@ -21,6 +21,7 @@
         }
         .grade-circle {
             animation: fadeIn 0.5s ease-in;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.8); }
@@ -28,6 +29,19 @@
         }
         .expandable-row {
             transition: all 0.3s ease;
+        }
+        /* Custom gradient backgrounds */
+        .gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .gradient-success {
+            background: linear-gradient(135deg, #0fb981 0%, #0d925f 100%);
+        }
+        .gradient-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 50%, #6d28d9 100%);
         }
         
         /* Mobile-specific optimizations */
@@ -68,14 +82,14 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-50 font-sans bg-gradient-to-br from-gray-50 via-purple-50 to-gray-50">
     <!-- Password Protection Modal -->
     <div id="passwordModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
         <div class="bg-white p-8 rounded-lg shadow-xl max-w-md w-full mx-4">
-            <h2 class="text-2xl font-bold mb-4">Access Website Scorecard</h2>
+            <h2 class="text-xl sm:text-2xl font-bold mb-4">Access Website Scorecard</h2>
             <p class="text-gray-600 mb-6">Please enter your password to view the scorecard.</p>
-            <input type="password" id="passwordInput" class="w-full p-3 border rounded-lg mb-4" placeholder="Enter password">
-            <button onclick="checkPassword()" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">Access Scorecard</button>
+            <input type="password" id="passwordInput" class="w-full p-3 border rounded-lg mb-4" placeholder="Enter password" autofocus>
+            <button onclick="checkPassword()" class="w-full gradient-primary text-white py-3 rounded-lg hover:opacity-90 transition shadow-lg">Access Scorecard</button>
             <p id="errorMessage" class="text-red-500 mt-4 hidden">Incorrect password. Please try again.</p>
         </div>
     </div>
@@ -83,16 +97,16 @@
     <!-- Main Content (Hidden Initially) -->
     <div id="mainContent" class="hidden">
         <!-- Header -->
-        <header class="bg-white shadow-sm">
+        <header class="gradient-header shadow-lg">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div class="text-center sm:text-left">
-                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Website Scorecard</h1>
-                        <p class="text-gray-600 mt-1 text-sm sm:text-base">See how your new website compares to the old one</p>
+                        <h1 class="text-2xl sm:text-4xl font-bold text-white">Website Scorecard</h1>
+                        <p class="text-purple-100 mt-1 text-sm sm:text-base">See how your new website compares to the old one</p>
                     </div>
                     <div class="text-center sm:text-right">
-                        <p class="text-xs sm:text-sm text-gray-500">Prepared for</p>
-                        <p class="text-base sm:text-lg font-semibold">Sample Business Ltd</p>
+                        <p class="text-xs sm:text-sm text-purple-200">Prepared for</p>
+                        <p class="text-base sm:text-lg font-semibold text-white">Sample Business Ltd</p>
                     </div>
                 </div>
             </div>
@@ -101,11 +115,11 @@
         <!-- Image Reveal Section -->
         <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-6 sm:py-12">
             <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
-                <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Your Website Transformation</h2>
+                <h2 class="text-xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">Your Website Transformation</h2>
                 
                 <!-- Reveal Button -->
                 <div class="text-center mb-4 sm:mb-6">
-                    <button id="revealButton" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 sm:gap-3 mx-auto text-sm sm:text-base">
+                    <button id="revealButton" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 sm:gap-3 mx-auto text-sm sm:text-base">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
@@ -144,18 +158,24 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
-                    <a href="old-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center justify-center gap-2 text-sm sm:text-base">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-6">
+                    <a href="old-website.html" target="_blank" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium transition-all duration-200 text-sm sm:text-base">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>View Old Website</span>
+                        <svg class="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                         </svg>
-                        View Old Website
                     </a>
-                    <a href="new-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center justify-center gap-2 text-sm sm:text-base">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    <a href="new-website.html" target="_blank" class="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 text-sm sm:text-base">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                         </svg>
-                        View New Website
+                        <span>View New Website</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
                     </a>
                 </div>
             </div>
@@ -164,27 +184,145 @@
         <!-- Overall Score Section -->
         <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
             <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
-                <h2 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-center">Overall Website Score</h2>
+                <h2 class="text-xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Overall Website Score</h2>
                 
                 <div class="grid grid-cols-2 gap-4 sm:gap-12 max-w-4xl mx-auto">
                     <!-- Old Site Score -->
                     <div class="text-center">
-                        <h3 class="text-sm sm:text-lg font-semibold mb-2 sm:mb-4 text-gray-600">Old Website</h3>
-                        <div class="grade-circle inline-flex items-center justify-center w-16 h-16 sm:w-32 sm:h-32 rounded-full bg-red-100 text-red-600 mb-2 sm:mb-4">
-                            <span class="text-xl sm:text-5xl font-bold">D</span>
+                        <h3 class="text-base sm:text-xl font-semibold mb-2 sm:mb-4 text-gray-600">Old Website</h3>
+                        <div class="grade-circle inline-flex items-center justify-center w-16 h-16 sm:w-32 sm:h-32 rounded-full gradient-danger text-white mb-2 sm:mb-4">
+                            <span class="text-2xl sm:text-5xl font-bold">D</span>
                         </div>
-                        <p class="text-lg sm:text-3xl font-bold text-gray-800">48/100</p>
+                        <p class="text-xl sm:text-3xl font-bold text-gray-800">32/100</p>
                         <p class="text-gray-600 mt-1 sm:mt-2 text-xs sm:text-base">Poor Performance</p>
                     </div>
                     
                     <!-- New Site Score -->
                     <div class="text-center">
-                        <h3 class="text-sm sm:text-lg font-semibold mb-2 sm:mb-4 text-gray-600">New Website</h3>
-                        <div class="grade-circle inline-flex items-center justify-center w-16 h-16 sm:w-32 sm:h-32 rounded-full bg-green-100 text-green-600 mb-2 sm:mb-4">
-                            <span class="text-xl sm:text-5xl font-bold">A</span>
+                        <h3 class="text-base sm:text-xl font-semibold mb-2 sm:mb-4 text-gray-600">New Website</h3>
+                        <div class="grade-circle inline-flex items-center justify-center w-16 h-16 sm:w-32 sm:h-32 rounded-full gradient-success text-white mb-2 sm:mb-4">
+                            <span class="text-2xl sm:text-5xl font-bold">A</span>
                         </div>
-                        <p class="text-lg sm:text-3xl font-bold text-gray-800">93/100</p>
+                        <p class="text-xl sm:text-3xl font-bold text-gray-800">93/100</p>
                         <p class="text-gray-600 mt-1 sm:mt-2 text-xs sm:text-base">Excellent Performance</p>
+                    </div>
+                </div>
+
+                <!-- Expandable Score Breakdown -->
+                <div class="mt-8">
+                    <div class="border rounded-lg overflow-hidden">
+                        <div class="p-4 cursor-pointer hover:bg-gray-50 transition-all duration-300" onclick="toggleRow('scoreBreakdown')">
+                            <div class="flex items-center justify-center gap-3">
+                                <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="scoreBreakdown-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                                <span class="text-base sm:text-lg font-semibold text-gray-700">📊 See How Scores Add Up</span>
+                            </div>
+                        </div>
+                        <div id="scoreBreakdown-details" class="hidden border-t bg-gray-50 p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+                                <!-- Old Website Breakdown -->
+                                <div class="space-y-4">
+                                    <h3 class="text-lg font-semibold text-center text-gray-700 mb-6">Old Website (32/100)</h3>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">🔍 SEO Score</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">42 ×20% =</span>
+                                                <span class="font-bold text-red-500">8.4 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">⚡ Performance</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">38 ×20% =</span>
+                                                <span class="font-bold text-red-500">7.6 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">♿ Accessibility</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">51 ×20% =</span>
+                                                <span class="font-bold text-orange-500">10.2 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">🎨 Design</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">30 ×20% =</span>
+                                                <span class="font-bold text-red-500">6.0 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">🔧 Technical</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">0 ×20% =</span>
+                                                <span class="font-bold text-red-500">0.0 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="border-t pt-3 mt-4">
+                                            <div class="flex items-center justify-between p-3 gradient-danger rounded-lg text-white shadow-sm">
+                                                <span class="font-semibold">Total Score</span>
+                                                <span class="text-lg font-bold">32/100</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- New Website Breakdown -->
+                                <div class="space-y-4">
+                                    <h3 class="text-lg font-semibold text-center text-gray-700 mb-6">New Website (93/100)</h3>
+                                    <div class="space-y-3">
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">🔍 SEO Score</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">88 ×20% =</span>
+                                                <span class="font-bold text-emerald-500">17.6 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">⚡ Performance</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">92 ×20% =</span>
+                                                <span class="font-bold text-emerald-500">18.4 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">♿ Accessibility</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">95 ×20% =</span>
+                                                <span class="font-bold text-emerald-500">19.0 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">🎨 Design</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">90 ×20% =</span>
+                                                <span class="font-bold text-emerald-500">18.0 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                                            <span class="text-sm font-medium">🔧 Technical</span>
+                                            <div class="flex items-center gap-3">
+                                                <span class="text-sm text-gray-600">100 ×20% =</span>
+                                                <span class="font-bold text-emerald-500">20.0 pts</span>
+                                            </div>
+                                        </div>
+                                        <div class="border-t pt-3 mt-4">
+                                            <div class="flex items-center justify-between p-3 gradient-success rounded-lg text-white shadow-sm">
+                                                <span class="font-semibold">Total Score</span>
+                                                <span class="text-lg font-bold">93/100</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                                <h4 class="font-semibold text-blue-800 mb-2">📊 Simple Math:</h4>
+                                <p class="text-blue-700 text-sm">Each section is worth 20% of your total score. We multiply each score by 20% and add them all together.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -193,25 +331,25 @@
         <!-- Detailed Comparison Table -->
         <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8 pb-8 sm:pb-16">
             <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
-                <h2 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Detailed Comparison</h2>
+                <h2 class="text-xl sm:text-3xl font-bold mb-6 sm:mb-8">Detailed Comparison</h2>
                 
                 <div class="space-y-3 sm:space-y-4" id="comparisonTable">
                     <!-- SEO Score -->
-                    <div class="border rounded-lg overflow-hidden">
-                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('seo')">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-300" onclick="toggleRow('seo')">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-sm sm:text-lg font-semibold">🔍 SEO Score</h3>
-                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How well search engines can find and understand your site</p>
+                                    <h3 class="text-base sm:text-xl font-semibold">🔍 SEO Score</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How well search engines can find and understand your site</p>
                                 </div>
-                                <div class="flex items-center justify-between sm:gap-8">
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-red-600">42</p>
+                                <div class="flex items-center justify-between sm:gap-6">
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">Old</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-red-500">42</p>
                                     </div>
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-green-600">88</p>
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">New</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-emerald-500">88</p>
                                     </div>
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="seo-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -222,46 +360,46 @@
                         <div id="seo-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Key Improvements:</h4>
-                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Key Improvements:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-sm">
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Added proper page titles and descriptions</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Implemented structured data for better search results</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Optimized images with descriptive alt text</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
-                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">With better SEO, more potential customers will find your website when searching for your services. This typically leads to 30-50% more organic traffic within 3-6 months.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">With better SEO, more potential customers will find your website when searching for your services. This typically leads to 30-50% more organic traffic within 3-6 months.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Performance Score -->
-                    <div class="border rounded-lg overflow-hidden">
-                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('performance')">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-300" onclick="toggleRow('performance')">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-sm sm:text-lg font-semibold">⚡ Speed & Performance</h3>
-                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How fast your website loads for visitors</p>
+                                    <h3 class="text-base sm:text-xl font-semibold">⚡ Speed & Performance</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How fast your website loads for visitors</p>
                                 </div>
-                                <div class="flex items-center justify-between sm:gap-8">
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-red-600">38</p>
+                                <div class="flex items-center justify-between sm:gap-6">
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">Old</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-red-600">38</p>
                                     </div>
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-green-600">92</p>
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">New</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-emerald-500">92</p>
                                     </div>
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="performance-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -272,52 +410,52 @@
                         <div id="performance-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Loading Time Improvement:</h4>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Loading Time Improvement:</h4>
                                     <div class="space-y-2 sm:space-y-3">
                                         <div>
-                                            <p class="text-xs sm:text-sm text-gray-600">First Paint</p>
+                                            <p class="text-sm text-gray-600">First Paint</p>
                                             <div class="flex items-center gap-2 sm:gap-4">
-                                                <span class="text-red-600 font-mono text-xs sm:text-sm">4.2s</span>
-                                                <span class="text-xs sm:text-sm">→</span>
-                                                <span class="text-green-600 font-mono text-xs sm:text-sm">1.2s</span>
+                                                <span class="text-red-600 font-mono text-sm">4.2s</span>
+                                                <span class="text-sm">→</span>
+                                                <span class="text-green-600 font-mono text-sm">1.2s</span>
                                                 <span class="text-xs text-green-600">(71% faster)</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <p class="text-xs sm:text-sm text-gray-600">Interactive Time</p>
+                                            <p class="text-sm text-gray-600">Interactive Time</p>
                                             <div class="flex items-center gap-2 sm:gap-4">
-                                                <span class="text-red-600 font-mono text-xs sm:text-sm">6.3s</span>
-                                                <span class="text-xs sm:text-sm">→</span>
-                                                <span class="text-green-600 font-mono text-xs sm:text-sm">1.8s</span>
+                                                <span class="text-red-600 font-mono text-sm">6.3s</span>
+                                                <span class="text-sm">→</span>
+                                                <span class="text-green-600 font-mono text-sm">1.8s</span>
                                                 <span class="text-xs text-green-600">(71% faster)</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
-                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">Faster websites keep visitors engaged. Studies show that a 1-second delay can result in 7% fewer conversions. Your new site loads 3 seconds faster, potentially increasing conversions by 20%+.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">Faster websites keep visitors engaged. Studies show that a 1-second delay can result in 7% fewer conversions. Your new site loads 3 seconds faster, potentially increasing conversions by 20%+.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Accessibility Score -->
-                    <div class="border rounded-lg overflow-hidden">
-                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('accessibility')">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-300" onclick="toggleRow('accessibility')">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-sm sm:text-lg font-semibold">♿ Accessibility</h3>
-                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How usable your site is for all visitors, including those with disabilities</p>
+                                    <h3 class="text-base sm:text-xl font-semibold">♿ Accessibility</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How usable your site is for all visitors, including those with disabilities</p>
                                 </div>
-                                <div class="flex items-center justify-between sm:gap-8">
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-red-600">51</p>
+                                <div class="flex items-center justify-between sm:gap-6">
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">Old</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-red-600">51</p>
                                     </div>
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-green-600">95</p>
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">New</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-emerald-500">95</p>
                                     </div>
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="accessibility-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -328,46 +466,46 @@
                         <div id="accessibility-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Improvements Made:</h4>
-                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Improvements Made:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-sm">
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Fixed 12 color contrast issues for better readability</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Added keyboard navigation for all interactive elements</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Implemented screen reader support</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
-                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">An accessible website reaches 15% more potential customers and reduces legal risk. It also improves the experience for all users, especially on mobile devices.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">An accessible website reaches 15% more potential customers and reduces legal risk. It also improves the experience for all users, especially on mobile devices.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Design Quality -->
-                    <div class="border rounded-lg overflow-hidden">
-                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('design')">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-300" onclick="toggleRow('design')">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-sm sm:text-lg font-semibold">🎨 Design & User Experience</h3>
-                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How professional and easy to use your website is</p>
+                                    <h3 class="text-base sm:text-xl font-semibold">🎨 Design & User Experience</h3>
+                                    <p class="text-gray-600 text-sm mt-1">How professional and easy to use your website is</p>
                                 </div>
-                                <div class="flex items-center justify-between sm:gap-8">
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-red-600">3/10</p>
+                                <div class="flex items-center justify-between sm:gap-6">
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">Old</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-red-500">30</p>
                                     </div>
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
-                                        <p class="text-lg sm:text-2xl font-bold text-green-600">9/10</p>
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">New</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-emerald-500">90</p>
                                     </div>
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="design-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -378,46 +516,46 @@
                         <div id="design-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Visual Improvements:</h4>
-                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Visual Improvements:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-sm">
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Modern, professional design that builds trust</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Clear navigation that helps visitors find information</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Fully responsive design that works on all devices</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
-                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">First impressions matter. A professional design increases trust by 75% and makes visitors 3x more likely to contact you or make a purchase.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">First impressions matter. A professional design increases trust by 75% and makes visitors 3x more likely to contact you or make a purchase.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Technical Health -->
-                    <div class="border rounded-lg overflow-hidden">
-                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('technical')">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gradient-to-r hover:from-purple-50 hover:to-pink-50 transition-all duration-300" onclick="toggleRow('technical')">
                             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-sm sm:text-lg font-semibold">🔧 Technical Health</h3>
-                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">Security and modern web standards compliance</p>
+                                    <h3 class="text-base sm:text-xl font-semibold">🔧 Technical Health</h3>
+                                    <p class="text-gray-600 text-sm mt-1">Security and modern web standards compliance</p>
                                 </div>
-                                <div class="flex items-center justify-between sm:gap-8">
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
-                                        <p class="text-lg sm:text-xl font-bold text-red-600">❌</p>
+                                <div class="flex items-center justify-between sm:gap-6">
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">Old</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-red-500">0</p>
                                     </div>
-                                    <div class="text-center min-w-0">
-                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
-                                        <p class="text-lg sm:text-xl font-bold text-green-600">✓</p>
+                                    <div class="text-center sm:w-16">
+                                        <p class="text-xs text-gray-500">New</p>
+                                        <p class="text-xl sm:text-2xl font-bold text-emerald-500">100</p>
                                     </div>
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="technical-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
@@ -428,25 +566,25 @@
                         <div id="technical-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Technical Upgrades:</h4>
-                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Technical Upgrades:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-sm">
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Secure HTTPS connection protects visitor data</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Modern framework ensures future compatibility</span>
                                         </li>
                                         <li class="flex items-start gap-1.5 sm:gap-2">
-                                            <span class="text-green-500 text-xs">✓</span>
+                                            <span class="text-emerald-500 font-bold">✓</span>
                                             <span>Clean code with no errors or warnings</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
-                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">A secure, well-built website protects your business and customers. Google also favors secure sites, giving you an edge over competitors.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Business Impact:</h4>
+                                    <p class="text-sm text-gray-600 leading-relaxed">A secure, well-built website protects your business and customers. Google also favors secure sites, giving you an edge over competitors.</p>
                                 </div>
                             </div>
                         </div>
@@ -457,14 +595,14 @@
 
         <!-- Call to Action -->
         <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8 pb-8 sm:pb-16">
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 sm:p-8 text-white text-center">
-                <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">Ready to Launch Your New Website?</h2>
-                <p class="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 text-blue-100">Your improved website is ready to help grow your business.</p>
+            <div class="bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 rounded-xl shadow-xl p-6 sm:p-8 text-white text-center">
+                <h2 class="text-xl sm:text-3xl font-bold mb-3 sm:mb-4">Ready to Launch Your New Website?</h2>
+                <p class="text-base sm:text-lg mb-6 sm:mb-8 text-purple-100">Your improved website is ready to help grow your business.</p>
                 <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-                    <button class="bg-white text-blue-600 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition text-sm sm:text-base">
+                    <button class="bg-white text-purple-600 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 hover:shadow-lg transition-all text-sm sm:text-base">
                         Schedule a Call
                     </button>
-                    <button class="bg-blue-500 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition text-sm sm:text-base">
+                    <button class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all text-sm sm:text-base">
                         View Full Demo
                     </button>
                 </div>
