@@ -119,13 +119,12 @@
                 
                 <!-- Reveal Button -->
                 <div class="text-center mb-4 sm:mb-6">
-                    <button id="revealButton" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-6 sm:px-8 py-3 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 sm:gap-3 mx-auto text-sm sm:text-base">
+                    <button id="revealButton" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 sm:px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 sm:gap-3 mx-auto text-xs sm:text-base">
                         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
-                        <span class="hidden sm:inline">Reveal Transformation</span>
-                        <span class="sm:hidden">Reveal</span>
+                        <span>Reveal Transformation</span>
                     </button>
                 </div>
 
@@ -142,8 +141,10 @@
                         <!-- Slider Handle -->
                         <div class="absolute top-0 w-1 h-full bg-white shadow-lg cursor-ew-resize z-10 opacity-0 transition-opacity duration-300" id="sliderHandle" style="left: 100%;">
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 sm:p-3 shadow-lg touch-manipulation">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <rect x="9" y="4" width="1.5" height="16" rx="0.75"></rect>
+                                    <rect x="12" y="4" width="1.5" height="16" rx="0.75"></rect>
+                                    <rect x="15" y="4" width="1.5" height="16" rx="0.75"></rect>
                                 </svg>
                             </div>
                         </div>
@@ -673,9 +674,9 @@
                 progressIndicator.style.opacity = '1';
                 handle.style.opacity = '0.3';
                 
-                // Smooth 3-second animation
+                // Smooth 5-second animation
                 const startTime = Date.now();
-                const duration = 3000; // 3 seconds
+                const duration = 5000; // 5 seconds for smoother reveal
                 const startPosition = 100; // Start with old site fully visible
                 const endPosition = 0; // End with new site fully visible
                 
@@ -683,10 +684,10 @@
                     const elapsed = Date.now() - startTime;
                     const progress = Math.min(elapsed / duration, 1);
                     
-                    // Easing function for smooth animation
+                    // Gentler easing function for ultra-smooth animation
                     const easeInOut = progress < 0.5 
-                        ? 2 * progress * progress 
-                        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                        ? 4 * progress * progress * progress
+                        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
                     
                     const currentPosition = startPosition - (easeInOut * (startPosition - endPosition));
                     const percentage = 100 - currentPosition;
