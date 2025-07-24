@@ -43,6 +43,11 @@
         .gradient-header {
             background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 50%, #6d28d9 100%);
         }
+        /* Extra small text for mobile */
+        .text-2xs {
+            font-size: 0.65rem;
+            line-height: 0.75rem;
+        }
         
         /* Mobile-specific optimizations */
         @media (max-width: 640px) {
@@ -98,15 +103,15 @@
     <div id="mainContent" class="hidden">
         <!-- Header -->
         <header class="gradient-header shadow-lg">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-6">
                     <div class="text-center sm:text-left">
-                        <h1 class="text-2xl sm:text-4xl font-bold text-white">Website Scorecard</h1>
-                        <p class="text-purple-100 mt-1 text-sm sm:text-base">See how your new website compares to the old one</p>
+                        <h1 class="text-3xl sm:text-5xl font-bold text-white">Website Scorecard</h1>
+                        <p class="text-purple-100 mt-2 sm:mt-3 text-sm sm:text-base">See how your new website compares to the old one</p>
                     </div>
                     <div class="text-center sm:text-right">
-                        <p class="text-xs sm:text-sm text-purple-200">Prepared for</p>
-                        <p class="text-base sm:text-lg font-semibold text-white">Sample Business Ltd</p>
+                        <p class="text-sm text-purple-200">Prepared for</p>
+                        <p class="text-lg sm:text-xl font-semibold text-white">Sample Business Ltd</p>
                     </div>
                 </div>
             </div>
@@ -119,12 +124,12 @@
                 
                 <!-- Reveal Button -->
                 <div class="text-center mb-4 sm:mb-6">
-                    <button id="revealButton" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 sm:px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 sm:gap-3 mx-auto text-xs sm:text-base">
-                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="revealButton" class="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 sm:px-8 py-2 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 inline-flex items-center gap-2 sm:gap-3 mx-auto text-xs sm:text-base min-w-max">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
-                        <span>Reveal Transformation</span>
+                        <span class="whitespace-nowrap">Reveal Transformation</span>
                     </button>
                 </div>
 
@@ -140,17 +145,17 @@
                         
                         <!-- Slider Handle -->
                         <div class="absolute top-0 w-1 h-full bg-white shadow-lg cursor-ew-resize z-10 opacity-0 transition-opacity duration-300" id="sliderHandle" style="left: 100%;">
-                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 sm:p-3 shadow-lg touch-manipulation">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
-                                    <rect x="9" y="4" width="1.5" height="16" rx="0.75"></rect>
-                                    <rect x="12" y="4" width="1.5" height="16" rx="0.75"></rect>
-                                    <rect x="15" y="4" width="1.5" height="16" rx="0.75"></rect>
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-3 sm:p-3 shadow-lg touch-manipulation flex items-center justify-center">
+                                <svg class="w-6 h-6 sm:w-6 sm:h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <rect x="9" y="5" width="2" height="14" rx="1"></rect>
+                                    <rect x="12" y="5" width="2" height="14" rx="1"></rect>
+                                    <rect x="15" y="5" width="2" height="14" rx="1"></rect>
                                 </svg>
                             </div>
                         </div>
 
                         <!-- Progress Indicator (shown during auto-reveal) -->
-                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300" id="progressIndicator">
+                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-90 px-4 py-2 rounded-full shadow-lg opacity-0 transition-opacity duration-300 hidden sm:block" id="progressIndicator">
                             <div class="flex items-center gap-2">
                                 <div class="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
                                 <span class="text-sm font-medium text-gray-700">Revealing transformation...</span>
