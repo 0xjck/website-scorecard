@@ -29,6 +29,43 @@
         .expandable-row {
             transition: all 0.3s ease;
         }
+        
+        /* Mobile-specific optimizations */
+        @media (max-width: 640px) {
+            body {
+                font-size: 14px;
+            }
+            
+            .image-reveal {
+                min-height: 200px;
+            }
+            
+            /* Improve touch targets */
+            button, .cursor-pointer {
+                min-height: 44px;
+                min-width: 44px;
+            }
+            
+            /* Prevent zoom on form inputs */
+            input[type="password"] {
+                font-size: 16px;
+            }
+            
+            /* Better spacing for mobile */
+            .space-y-4 > * + * {
+                margin-top: 1rem;
+            }
+        }
+        
+        /* Touch-friendly slider handle */
+        #sliderHandle {
+            touch-action: pan-x;
+        }
+        
+        #sliderHandle > div {
+            min-width: 44px;
+            min-height: 44px;
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -47,37 +84,38 @@
     <div id="mainContent" class="hidden">
         <!-- Header -->
         <header class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900">Website Scorecard</h1>
-                        <p class="text-gray-600 mt-1">See how your new website compares to the old one</p>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div class="text-center sm:text-left">
+                        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Website Scorecard</h1>
+                        <p class="text-gray-600 mt-1 text-sm sm:text-base">See how your new website compares to the old one</p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-sm text-gray-500">Prepared for</p>
-                        <p class="text-lg font-semibold">Sample Business Ltd</p>
+                    <div class="text-center sm:text-right">
+                        <p class="text-xs sm:text-sm text-gray-500">Prepared for</p>
+                        <p class="text-base sm:text-lg font-semibold">Sample Business Ltd</p>
                     </div>
                 </div>
             </div>
         </header>
 
         <!-- Image Reveal Section -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold mb-6 text-center">Your Website Transformation</h2>
+        <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-6 sm:py-12">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Your Website Transformation</h2>
                 
                 <!-- Reveal Button -->
-                <div class="text-center mb-6">
-                    <button id="revealButton" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-3 mx-auto">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="text-center mb-4 sm:mb-6">
+                    <button id="revealButton" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 sm:px-8 py-3 sm:py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center gap-2 sm:gap-3 mx-auto text-sm sm:text-base">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                         </svg>
-                        Reveal Transformation
+                        <span class="hidden sm:inline">Reveal Transformation</span>
+                        <span class="sm:hidden">Reveal</span>
                     </button>
                 </div>
 
-                <div class="relative max-w-3xl mx-auto mb-8">
+                <div class="relative w-full max-w-4xl mx-auto mb-4 sm:mb-8">
                     <div class="image-reveal bg-gray-200 rounded-lg overflow-hidden relative" id="imageContainer">
                         <!-- New Site Image (Background - Always visible) -->
                         <img src="new-website.png" alt="New Website" class="w-full h-full object-contain absolute top-0 left-0" id="newSiteImage">
@@ -89,8 +127,8 @@
                         
                         <!-- Slider Handle -->
                         <div class="absolute top-0 w-1 h-full bg-white shadow-lg cursor-ew-resize z-10 opacity-0 transition-opacity duration-300" id="sliderHandle" style="left: 100%;">
-                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow-lg">
-                                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-full p-2 sm:p-3 shadow-lg touch-manipulation">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"></path>
                                 </svg>
                             </div>
@@ -106,16 +144,16 @@
                     </div>
                 </div>
 
-                <div class="flex justify-center gap-8">
-                    <a href="old-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
+                    <a href="old-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center justify-center gap-2 text-sm sm:text-base">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                         </svg>
                         View Old Website
                     </a>
-                    <a href="new-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    <a href="new-website.html" target="_blank" class="text-blue-600 hover:underline flex items-center justify-center gap-2 text-sm sm:text-base">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                         </svg>
                         View New Website
                     </a>
@@ -124,85 +162,85 @@
         </section>
 
         <!-- Overall Score Section -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold mb-8 text-center">Overall Website Score</h2>
+        <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <h2 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-center">Overall Website Score</h2>
                 
-                <div class="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+                <div class="grid grid-cols-2 gap-4 sm:gap-12 max-w-4xl mx-auto">
                     <!-- Old Site Score -->
                     <div class="text-center">
-                        <h3 class="text-lg font-semibold mb-4 text-gray-600">Old Website</h3>
-                        <div class="grade-circle inline-flex items-center justify-center w-32 h-32 rounded-full bg-red-100 text-red-600 mb-4">
-                            <span class="text-5xl font-bold">D</span>
+                        <h3 class="text-sm sm:text-lg font-semibold mb-2 sm:mb-4 text-gray-600">Old Website</h3>
+                        <div class="grade-circle inline-flex items-center justify-center w-16 h-16 sm:w-32 sm:h-32 rounded-full bg-red-100 text-red-600 mb-2 sm:mb-4">
+                            <span class="text-xl sm:text-5xl font-bold">D</span>
                         </div>
-                        <p class="text-3xl font-bold text-gray-800">48/100</p>
-                        <p class="text-gray-600 mt-2">Poor Performance</p>
+                        <p class="text-lg sm:text-3xl font-bold text-gray-800">48/100</p>
+                        <p class="text-gray-600 mt-1 sm:mt-2 text-xs sm:text-base">Poor Performance</p>
                     </div>
                     
                     <!-- New Site Score -->
                     <div class="text-center">
-                        <h3 class="text-lg font-semibold mb-4 text-gray-600">New Website</h3>
-                        <div class="grade-circle inline-flex items-center justify-center w-32 h-32 rounded-full bg-green-100 text-green-600 mb-4">
-                            <span class="text-5xl font-bold">A</span>
+                        <h3 class="text-sm sm:text-lg font-semibold mb-2 sm:mb-4 text-gray-600">New Website</h3>
+                        <div class="grade-circle inline-flex items-center justify-center w-16 h-16 sm:w-32 sm:h-32 rounded-full bg-green-100 text-green-600 mb-2 sm:mb-4">
+                            <span class="text-xl sm:text-5xl font-bold">A</span>
                         </div>
-                        <p class="text-3xl font-bold text-gray-800">93/100</p>
-                        <p class="text-gray-600 mt-2">Excellent Performance</p>
+                        <p class="text-lg sm:text-3xl font-bold text-gray-800">93/100</p>
+                        <p class="text-gray-600 mt-1 sm:mt-2 text-xs sm:text-base">Excellent Performance</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Detailed Comparison Table -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold mb-8">Detailed Comparison</h2>
+        <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8 pb-8 sm:pb-16">
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-8">
+                <h2 class="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">Detailed Comparison</h2>
                 
-                <div class="space-y-4" id="comparisonTable">
+                <div class="space-y-3 sm:space-y-4" id="comparisonTable">
                     <!-- SEO Score -->
                     <div class="border rounded-lg overflow-hidden">
-                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('seo')">
-                            <div class="flex items-center justify-between">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('seo')">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-lg font-semibold">🔍 SEO Score</h3>
-                                    <p class="text-gray-600 text-sm mt-1">How well search engines can find and understand your site</p>
+                                    <h3 class="text-sm sm:text-lg font-semibold">🔍 SEO Score</h3>
+                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How well search engines can find and understand your site</p>
                                 </div>
-                                <div class="flex items-center gap-8">
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">Old</p>
-                                        <p class="text-2xl font-bold text-red-600">42</p>
+                                <div class="flex items-center justify-between sm:gap-8">
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-red-600">42</p>
                                     </div>
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">New</p>
-                                        <p class="text-2xl font-bold text-green-600">88</p>
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-green-600">88</p>
                                     </div>
-                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="seo-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="seo-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </div>
                             </div>
                         </div>
-                        <div id="seo-details" class="hidden border-t px-6 py-4 bg-gray-50">
-                            <div class="grid md:grid-cols-2 gap-6">
+                        <div id="seo-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-3">Key Improvements:</h4>
-                                    <ul class="space-y-2 text-sm">
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Key Improvements:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Added proper page titles and descriptions</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Implemented structured data for better search results</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Optimized images with descriptive alt text</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
-                                    <p class="text-sm text-gray-600">With better SEO, more potential customers will find your website when searching for your services. This typically leads to 30-50% more organic traffic within 3-6 months.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
+                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">With better SEO, more potential customers will find your website when searching for your services. This typically leads to 30-50% more organic traffic within 3-6 months.</p>
                                 </div>
                             </div>
                         </div>
@@ -210,55 +248,55 @@
 
                     <!-- Performance Score -->
                     <div class="border rounded-lg overflow-hidden">
-                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('performance')">
-                            <div class="flex items-center justify-between">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('performance')">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-lg font-semibold">⚡ Speed & Performance</h3>
-                                    <p class="text-gray-600 text-sm mt-1">How fast your website loads for visitors</p>
+                                    <h3 class="text-sm sm:text-lg font-semibold">⚡ Speed & Performance</h3>
+                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How fast your website loads for visitors</p>
                                 </div>
-                                <div class="flex items-center gap-8">
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">Old</p>
-                                        <p class="text-2xl font-bold text-red-600">38</p>
+                                <div class="flex items-center justify-between sm:gap-8">
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-red-600">38</p>
                                     </div>
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">New</p>
-                                        <p class="text-2xl font-bold text-green-600">92</p>
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-green-600">92</p>
                                     </div>
-                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="performance-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="performance-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </div>
                             </div>
                         </div>
-                        <div id="performance-details" class="hidden border-t px-6 py-4 bg-gray-50">
-                            <div class="grid md:grid-cols-2 gap-6">
+                        <div id="performance-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-3">Loading Time Improvement:</h4>
-                                    <div class="space-y-3">
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Loading Time Improvement:</h4>
+                                    <div class="space-y-2 sm:space-y-3">
                                         <div>
-                                            <p class="text-sm text-gray-600">First Paint</p>
-                                            <div class="flex items-center gap-4">
-                                                <span class="text-red-600 font-mono">4.2s</span>
-                                                <span>→</span>
-                                                <span class="text-green-600 font-mono">1.2s</span>
-                                                <span class="text-sm text-green-600">(71% faster)</span>
+                                            <p class="text-xs sm:text-sm text-gray-600">First Paint</p>
+                                            <div class="flex items-center gap-2 sm:gap-4">
+                                                <span class="text-red-600 font-mono text-xs sm:text-sm">4.2s</span>
+                                                <span class="text-xs sm:text-sm">→</span>
+                                                <span class="text-green-600 font-mono text-xs sm:text-sm">1.2s</span>
+                                                <span class="text-xs text-green-600">(71% faster)</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <p class="text-sm text-gray-600">Interactive Time</p>
-                                            <div class="flex items-center gap-4">
-                                                <span class="text-red-600 font-mono">6.3s</span>
-                                                <span>→</span>
-                                                <span class="text-green-600 font-mono">1.8s</span>
-                                                <span class="text-sm text-green-600">(71% faster)</span>
+                                            <p class="text-xs sm:text-sm text-gray-600">Interactive Time</p>
+                                            <div class="flex items-center gap-2 sm:gap-4">
+                                                <span class="text-red-600 font-mono text-xs sm:text-sm">6.3s</span>
+                                                <span class="text-xs sm:text-sm">→</span>
+                                                <span class="text-green-600 font-mono text-xs sm:text-sm">1.8s</span>
+                                                <span class="text-xs text-green-600">(71% faster)</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
-                                    <p class="text-sm text-gray-600">Faster websites keep visitors engaged. Studies show that a 1-second delay can result in 7% fewer conversions. Your new site loads 3 seconds faster, potentially increasing conversions by 20%+.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
+                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">Faster websites keep visitors engaged. Studies show that a 1-second delay can result in 7% fewer conversions. Your new site loads 3 seconds faster, potentially increasing conversions by 20%+.</p>
                                 </div>
                             </div>
                         </div>
@@ -266,49 +304,49 @@
 
                     <!-- Accessibility Score -->
                     <div class="border rounded-lg overflow-hidden">
-                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('accessibility')">
-                            <div class="flex items-center justify-between">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('accessibility')">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-lg font-semibold">♿ Accessibility</h3>
-                                    <p class="text-gray-600 text-sm mt-1">How usable your site is for all visitors, including those with disabilities</p>
+                                    <h3 class="text-sm sm:text-lg font-semibold">♿ Accessibility</h3>
+                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How usable your site is for all visitors, including those with disabilities</p>
                                 </div>
-                                <div class="flex items-center gap-8">
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">Old</p>
-                                        <p class="text-2xl font-bold text-red-600">51</p>
+                                <div class="flex items-center justify-between sm:gap-8">
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-red-600">51</p>
                                     </div>
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">New</p>
-                                        <p class="text-2xl font-bold text-green-600">95</p>
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-green-600">95</p>
                                     </div>
-                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="accessibility-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="accessibility-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </div>
                             </div>
                         </div>
-                        <div id="accessibility-details" class="hidden border-t px-6 py-4 bg-gray-50">
-                            <div class="grid md:grid-cols-2 gap-6">
+                        <div id="accessibility-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-3">Improvements Made:</h4>
-                                    <ul class="space-y-2 text-sm">
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Improvements Made:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Fixed 12 color contrast issues for better readability</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Added keyboard navigation for all interactive elements</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Implemented screen reader support</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
-                                    <p class="text-sm text-gray-600">An accessible website reaches 15% more potential customers and reduces legal risk. It also improves the experience for all users, especially on mobile devices.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
+                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">An accessible website reaches 15% more potential customers and reduces legal risk. It also improves the experience for all users, especially on mobile devices.</p>
                                 </div>
                             </div>
                         </div>
@@ -316,49 +354,49 @@
 
                     <!-- Design Quality -->
                     <div class="border rounded-lg overflow-hidden">
-                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('design')">
-                            <div class="flex items-center justify-between">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('design')">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-lg font-semibold">🎨 Design & User Experience</h3>
-                                    <p class="text-gray-600 text-sm mt-1">How professional and easy to use your website is</p>
+                                    <h3 class="text-sm sm:text-lg font-semibold">🎨 Design & User Experience</h3>
+                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">How professional and easy to use your website is</p>
                                 </div>
-                                <div class="flex items-center gap-8">
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">Old</p>
-                                        <p class="text-2xl font-bold text-red-600">3/10</p>
+                                <div class="flex items-center justify-between sm:gap-8">
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-red-600">3/10</p>
                                     </div>
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">New</p>
-                                        <p class="text-2xl font-bold text-green-600">9/10</p>
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
+                                        <p class="text-lg sm:text-2xl font-bold text-green-600">9/10</p>
                                     </div>
-                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="design-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="design-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </div>
                             </div>
                         </div>
-                        <div id="design-details" class="hidden border-t px-6 py-4 bg-gray-50">
-                            <div class="grid md:grid-cols-2 gap-6">
+                        <div id="design-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-3">Visual Improvements:</h4>
-                                    <ul class="space-y-2 text-sm">
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Visual Improvements:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Modern, professional design that builds trust</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Clear navigation that helps visitors find information</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Fully responsive design that works on all devices</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
-                                    <p class="text-sm text-gray-600">First impressions matter. A professional design increases trust by 75% and makes visitors 3x more likely to contact you or make a purchase.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
+                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">First impressions matter. A professional design increases trust by 75% and makes visitors 3x more likely to contact you or make a purchase.</p>
                                 </div>
                             </div>
                         </div>
@@ -366,49 +404,49 @@
 
                     <!-- Technical Health -->
                     <div class="border rounded-lg overflow-hidden">
-                        <div class="p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('technical')">
-                            <div class="flex items-center justify-between">
+                        <div class="p-3 sm:p-6 cursor-pointer hover:bg-gray-50 transition" onclick="toggleRow('technical')">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
                                 <div class="flex-1">
-                                    <h3 class="text-lg font-semibold">🔧 Technical Health</h3>
-                                    <p class="text-gray-600 text-sm mt-1">Security and modern web standards compliance</p>
+                                    <h3 class="text-sm sm:text-lg font-semibold">🔧 Technical Health</h3>
+                                    <p class="text-gray-600 text-xs sm:text-sm mt-0.5 sm:mt-1">Security and modern web standards compliance</p>
                                 </div>
-                                <div class="flex items-center gap-8">
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">Old</p>
-                                        <p class="text-xl font-bold text-red-600">❌</p>
+                                <div class="flex items-center justify-between sm:gap-8">
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">Old</p>
+                                        <p class="text-lg sm:text-xl font-bold text-red-600">❌</p>
                                     </div>
-                                    <div class="text-center">
-                                        <p class="text-sm text-gray-500">New</p>
-                                        <p class="text-xl font-bold text-green-600">✓</p>
+                                    <div class="text-center min-w-0">
+                                        <p class="text-xs sm:text-sm text-gray-500">New</p>
+                                        <p class="text-lg sm:text-xl font-bold text-green-600">✓</p>
                                     </div>
-                                    <svg class="w-5 h-5 text-gray-400 transform transition-transform" id="technical-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transform transition-transform flex-shrink-0 ml-2" id="technical-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                     </svg>
                                 </div>
                             </div>
                         </div>
-                        <div id="technical-details" class="hidden border-t px-6 py-4 bg-gray-50">
-                            <div class="grid md:grid-cols-2 gap-6">
+                        <div id="technical-details" class="hidden border-t px-3 sm:px-6 py-3 sm:py-4 bg-gray-50">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-6">
                                 <div>
-                                    <h4 class="font-semibold mb-3">Technical Upgrades:</h4>
-                                    <ul class="space-y-2 text-sm">
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Technical Upgrades:</h4>
+                                    <ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm">
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Secure HTTPS connection protects visitor data</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Modern framework ensures future compatibility</span>
                                         </li>
-                                        <li class="flex items-start gap-2">
-                                            <span class="text-green-500">✓</span>
+                                        <li class="flex items-start gap-1.5 sm:gap-2">
+                                            <span class="text-green-500 text-xs">✓</span>
                                             <span>Clean code with no errors or warnings</span>
                                         </li>
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold mb-3">Business Impact:</h4>
-                                    <p class="text-sm text-gray-600">A secure, well-built website protects your business and customers. Google also favors secure sites, giving you an edge over competitors.</p>
+                                    <h4 class="font-semibold mb-2 sm:mb-3 text-xs sm:text-base">Business Impact:</h4>
+                                    <p class="text-xs sm:text-sm text-gray-600 leading-tight sm:leading-normal">A secure, well-built website protects your business and customers. Google also favors secure sites, giving you an edge over competitors.</p>
                                 </div>
                             </div>
                         </div>
@@ -418,15 +456,15 @@
         </section>
 
         <!-- Call to Action -->
-        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-16">
-            <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-8 text-white text-center">
-                <h2 class="text-3xl font-bold mb-4">Ready to Launch Your New Website?</h2>
-                <p class="text-xl mb-8 text-blue-100">Your improved website is ready to help grow your business.</p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+        <section class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8 pb-8 sm:pb-16">
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 sm:p-8 text-white text-center">
+                <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4">Ready to Launch Your New Website?</h2>
+                <p class="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 text-blue-100">Your improved website is ready to help grow your business.</p>
+                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                    <button class="bg-white text-blue-600 px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition text-sm sm:text-base">
                         Schedule a Call
                     </button>
-                    <button class="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition">
+                    <button class="bg-blue-500 text-white px-6 sm:px-8 py-3 rounded-lg font-semibold hover:bg-blue-400 transition text-sm sm:text-base">
                         View Full Demo
                     </button>
                 </div>
